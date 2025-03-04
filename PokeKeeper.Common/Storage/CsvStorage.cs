@@ -58,27 +58,4 @@ public class CsvStorage : FileStorage
     {
         return $"{pokemon.Name},{pokemon.Type},{pokemon.HP},{pokemon.Attack},{pokemon.Defense},{pokemon.SpecialAttack},{pokemon.SpecialDefense},{pokemon.Speed}\n";
     }
-
-
-    public override void RemovePokemon(Pokemon pokemon)
-    {
-        if (File.Exists(FilePath))
-        {
-            string[] lines = File.ReadAllLines(FilePath);
-            if (lines.Length > 0)
-            {
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    string[] values = lines[i].Split(',');
-                    if (values[0] == pokemon.Name)
-                    {
-                        lines[i] = "";
-                        break;
-                    }
-                }
-                File.WriteAllLines(FilePath, lines);
-            }
-        }
-        PokemonTeam = LoadPokemonTeamFromFile() ?? new Pokemon[6];
-    }
 }

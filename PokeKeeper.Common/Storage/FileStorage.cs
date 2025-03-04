@@ -16,7 +16,6 @@ public abstract class FileStorage
 
     public abstract Pokemon[] LoadPokemonTeamFromFile();
     public abstract void AddPokemon(Pokemon pokemon);
-    public abstract void RemovePokemon(Pokemon pokemon);
 
     public void DisplayTeamFromFile() 
     {

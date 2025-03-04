@@ -6,7 +6,7 @@ namespace PokeKeeper.Common.Storage;
 
 public class JsonFileStorage : FileStorage
 {
-    public JsonFileStorage(string filePath) : base(filePath) {}
+    public JsonFileStorage(string filePath) : base(filePath) { }
 
     public override Pokemon[] LoadPokemonTeamFromFile()
     {
@@ -16,13 +16,11 @@ public class JsonFileStorage : FileStorage
             {
                 string json = reader.ReadToEnd();
                 Pokemon[] pokemonTeam = JsonSerializer.Deserialize<Pokemon[]>(json) ?? [];
+
                 return pokemonTeam;
             }
         }
-        else
-        {
-            return [];
-        }
+        return [];
     }
 
     public override void AddPokemon(Pokemon pokemon)
@@ -31,14 +29,10 @@ public class JsonFileStorage : FileStorage
         {
             if (PokemonTeam != null)
             {
-                for (int i = 0; i < PokemonTeam.Length; i++)
-                {
-                    if (PokemonTeam[i] == null)
-                    {
-                        PokemonTeam[i] = pokemon;
-                        break;
-                    }
-                }
+                var team = new Pokemon[PokemonTeam.Length + 1];
+                PokemonTeam.CopyTo(team, 0);
+                team[team.Length - 1] = pokemon;
+                PokemonTeam = team;
                 string json = JsonSerializer.Serialize(PokemonTeam);
                 File.WriteAllText(FilePath, json);
             }
@@ -48,36 +42,6 @@ public class JsonFileStorage : FileStorage
             PokemonTeam[0] = pokemon;
             string json = JsonSerializer.Serialize(PokemonTeam);
             File.WriteAllText(FilePath, json);
-        }
-    }
-
-    public override void RemovePokemon(Pokemon pokemon)
-    {
-        if (File.Exists(FilePath))
-        {
-            if (PokemonTeam != null)
-            {
-                for (int i = 0; i < PokemonTeam.Length; i++)
-                {
-                    if (PokemonTeam[i] == pokemon)
-                    {
-                        PokemonTeam[i] = new Pokemon()
-                        {
-                            Name = null,
-                            Type = null,
-                            HP = null,
-                            Attack = null,
-                            Defense = null,
-                            SpecialAttack = null,
-                            SpecialDefense = null,
-                            Speed = null
-                        };
-                        break;
-                    }
-                }
-                string json = JsonSerializer.Serialize(PokemonTeam);
-                File.WriteAllText(FilePath, json);
-            }
         }
     }
 }
