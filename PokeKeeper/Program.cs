@@ -7,7 +7,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        var storage = new CsvStorage("pokemon.csv");
+        var storage = new JsonFileStorage("pokemon.csv");
         SeedData(storage);
         
         storage.DisplayTeamFromFile();

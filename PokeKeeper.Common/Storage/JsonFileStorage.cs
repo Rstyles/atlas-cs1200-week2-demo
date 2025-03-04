@@ -39,7 +39,7 @@ public class JsonFileStorage : FileStorage
         }
         else
         {
-            PokemonTeam[0] = pokemon;
+            PokemonTeam = [pokemon];
             string json = JsonSerializer.Serialize(PokemonTeam);
             File.WriteAllText(FilePath, json);
         }
